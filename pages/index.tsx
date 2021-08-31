@@ -1,6 +1,11 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import { io } from "socket.io-client";
+
+const socket = io(process.env.NODE_ENV === 'production' ? "https://bb-pointing-poker.herokuapp.com" : 'http://localhost:8080', {
+  withCredentials: true,
+});
 
 export default function Home() {
   return (
