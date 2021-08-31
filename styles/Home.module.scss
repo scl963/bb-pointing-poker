@@ -1,0 +1,27 @@
+.header {
+  color: var(--barn-door-red);
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.inputLabel {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.column {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.largeText {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+@media (max-width: 480px) {
+  #roomNumberInput {
+    margin-bottom: 1rem;
+  }
+}
