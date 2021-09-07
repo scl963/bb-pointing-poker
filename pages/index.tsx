@@ -2,12 +2,36 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.scss'
 import { io } from "socket.io-client";
+import { useRouter } from 'next/router'
+import React, { useState } from 'react';
+
 
 const socket = io(process.env.NODE_ENV === 'production' ? "https://bb-pointing-poker.herokuapp.com" : 'http://localhost:8080', {
   withCredentials: true,
 });
 
 export default function Home() {
+  const router = useRouter()
+  const [roomId, setRoomId] = useState('')
+
+  function joinRoom() {
+    if (roomId && typeof roomId === "string")
+      socket.emit("join-room-by-id", roomId, (res) => {
+        if (res.status === "success") {
+          router.push(`/rooms/${roomId}`)
+        }
+      });
+  }
+
+  function createNewRoom() {
+    console.log("Creating new room!");
+    socket.emit("create-new-room", ({ roomId: newRoomId }) => {
+      console.log("Room ID", newRoomId);
+      router.push(`/rooms/${newRoomId}`);
+    });
+  }
+
+
   return (
 <>
       <Head>
@@ -23,11 +47,20 @@ export default function Home() {
         </label>
         <div className={styles.column}>
           <div>
-            <input  type="text" id="room-number-input" />
-            <button>Join Room</button>
+            <input  
+              type="text" 
+              id="room-number-input" 
+              onChange={(e) => setRoomId(e.target.value)}
+              value={roomId}
+            />
+            <button
+            onClick={joinRoom}
+            >Join Room</button>
           </div>
           <p className={styles.largeText}>OR</p>
-          <button>Create new room</button>
+          <button
+            onClick={createNewRoom}
+          >Create new room</button>
         </div>
       </main>
       <footer className={styles.footer}>
