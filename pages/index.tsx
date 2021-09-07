@@ -6,11 +6,9 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react';
 
 
-const socket = io(process.env.NODE_ENV === 'production' ? "https://bb-pointing-poker.herokuapp.com" : 'http://localhost:8080', {
-  withCredentials: true,
-});
 
-export default function Home() {
+
+export default function Home({socket}) {
   const router = useRouter()
   const [roomId, setRoomId] = useState('')
 
